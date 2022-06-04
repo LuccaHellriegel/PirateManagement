@@ -1,0 +1,96 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+paths:
+  /api/v1/treasures:
+    get:
+      tags:
+      - treasure-controller
+      operationId: getTreasures
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Treasure'
+    post:
+      tags:
+      - treasure-controller
+      operationId: createTreasure
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Treasure'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Treasure'
+  /api/v1/treasures/{id}:
+    get:
+      tags:
+      - treasure-controller
+      operationId: getTreasure
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Treasure'
+    delete:
+      tags:
+      - treasure-controller
+      operationId: deleteTreasure
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+components:
+  schemas:
+    Position:
+      type: object
+      properties:
+        x:
+          type: number
+          format: float
+        "y":
+          type: number
+          format: float
+    Treasure:
+      required:
+      - owner
+      - position
+      - size
+      type: object
+      properties:
+        id:
+          type: string
+        owner:
+          type: string
+        position:
+          $ref: '#/components/schemas/Position'
+        size:
+          type: number
