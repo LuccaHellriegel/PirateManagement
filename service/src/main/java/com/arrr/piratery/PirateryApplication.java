@@ -26,8 +26,10 @@ public class PirateryApplication {
           BigDecimal.valueOf(15));
       Treasure treasure3 = new Treasure("id3", "Owner3", new Position(3, 4),
           BigDecimal.valueOf(20));
+      Treasure treasure4 = new Treasure("id4", "Owner4", new Position(300, 400),
+          BigDecimal.valueOf(20));
 
-      Flux.just(treasure1, treasure2, treasure3).map(treasureRepository::save)
+      Flux.just(treasure1, treasure2, treasure3, treasure4).map(treasureRepository::save)
           .subscribe(result -> System.out.println("Created treasure : " + result.block()));
     };
   }

@@ -6,6 +6,7 @@ import com.arrr.piratery.commons.base.BaseController;
 import com.arrr.piratery.domain.Treasure;
 import com.arrr.piratery.services.domain.TreasureService;
 import java.net.URI;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -49,5 +51,11 @@ public class TreasureController extends BaseController<Treasure> {
   @DeleteMapping("/{id}")
   public Mono<ResponseEntity<Void>> deleteTreasure(@PathVariable String id) {
     return treasureService.delete(id).thenReturn(ResponseEntity.noContent().build());
+  }
+
+  @GetMapping("/radius")
+  public Mono<ResponseEntity<Flux<Treasure>>> getTreasuresInRadius(@RequestParam float x,
+      @RequestParam float y, @RequestParam Optional<Float> radius) {
+    return Mono.just(ResponseEntity.ok(treasureService.getTreasuresInRadius(x, y, radius)));
   }
 }
