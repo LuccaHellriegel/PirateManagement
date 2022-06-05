@@ -6,14 +6,6 @@ import reactor.core.publisher.Mono;
 
 public interface EntityValidation<E> {
 
-  Mono<Boolean> isUnique(E entity);
-
-  Mono<E> validateUniqueness(E entity);
-
-  Mono<Boolean> hasValidProperties(E entity);
-
-  Mono<E> validateEntityProps(E entity);
-
   Mono<E> validate(E entity);
 
   /**

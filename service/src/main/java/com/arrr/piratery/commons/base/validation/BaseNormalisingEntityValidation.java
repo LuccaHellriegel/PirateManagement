@@ -26,12 +26,10 @@ public class BaseNormalisingEntityValidation<PO extends PersistenceObject, DO ex
   /**
    * The default validation always returns true.
    */
-  @Override
   public Mono<Boolean> isUnique(DO domainObject) {
     return Mono.just(true);
   }
 
-  @Override
   public Mono<DO> validateUniqueness(DO domainObject) {
     return isUnique(domainObject).map(isUnique -> {
       if (!isUnique) {
@@ -44,12 +42,10 @@ public class BaseNormalisingEntityValidation<PO extends PersistenceObject, DO ex
   /**
    * The default validation always returns true.
    */
-  @Override
   public Mono<Boolean> hasValidProperties(DO domainObject) {
     return Mono.just(true);
   }
 
-  @Override
   public Mono<DO> validateEntityProps(DO domainObject) {
     return hasValidProperties(domainObject).map(isValid -> {
       if (!isValid) {

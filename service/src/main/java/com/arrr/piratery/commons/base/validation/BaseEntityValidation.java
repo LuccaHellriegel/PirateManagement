@@ -18,12 +18,10 @@ public class BaseEntityValidation<E extends PersistenceObject> implements Entity
   /**
    * The default validation always returns true.
    */
-  @Override
   public Mono<Boolean> isUnique(E entity) {
     return Mono.just(true);
   }
 
-  @Override
   public Mono<E> validateUniqueness(E entity) {
     return isUnique(entity).map(isUnique -> {
       if (!isUnique) {
@@ -36,12 +34,10 @@ public class BaseEntityValidation<E extends PersistenceObject> implements Entity
   /**
    * The default validation always returns true.
    */
-  @Override
   public Mono<Boolean> hasValidProperties(E entity) {
     return Mono.just(true);
   }
 
-  @Override
   public Mono<E> validateEntityProps(E entity) {
     return hasValidProperties(entity).map(isValid -> {
       if (!isValid) {

@@ -15,6 +15,7 @@ import reactor.core.publisher.Flux;
 public class TreasureService extends EntityRepository<Treasure> {
 
   private final TreasureRepository repository;
+  private static final float DEFAULT_RADIUS = 10F;
 
   public TreasureService(TreasureRepository repository) {
     super(Treasure.class, repository);
@@ -29,7 +30,7 @@ public class TreasureService extends EntityRepository<Treasure> {
   }
 
   public Flux<Treasure> getTreasuresInRadius(float x, float y, Optional<Float> radiusOptional) {
-    float radius = radiusOptional.orElse(10F);
+    float radius = radiusOptional.orElse(DEFAULT_RADIUS);
     return repository.findAll(inRadiusPredicate(x, y, radius));
   }
 }
