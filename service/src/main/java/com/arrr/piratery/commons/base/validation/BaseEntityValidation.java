@@ -1,6 +1,6 @@
 package com.arrr.piratery.commons.base.validation;
 
-import com.arrr.piratery.commons.base.types.PersistenceObject;
+import com.arrr.piratery.commons.base.types.Entity;
 import com.arrr.piratery.commons.base.error.EntityError;
 import java.util.Collection;
 import java.util.List;
@@ -10,9 +10,9 @@ import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Mono;
 
 @AllArgsConstructor
-public class BaseEntityValidation<E extends PersistenceObject> implements EntityValidation<E> {
+public class BaseEntityValidation<E extends Entity> implements EntityValidation<E> {
 
-  protected final EntityError<E> entityError;
+  protected final EntityError entityError;
   protected final ReactiveCrudRepository<E, String> repository;
 
   /**
@@ -41,7 +41,7 @@ public class BaseEntityValidation<E extends PersistenceObject> implements Entity
   public Mono<E> validateEntityProps(E entity) {
     return hasValidProperties(entity).map(isValid -> {
       if (!isValid) {
-        throw entityError.invalid(entity);
+        throw entityError.invalid();
       }
       return entity;
     });

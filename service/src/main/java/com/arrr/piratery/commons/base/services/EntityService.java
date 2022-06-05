@@ -1,9 +1,7 @@
-package com.arrr.piratery.commons.base;
+package com.arrr.piratery.commons.base.services;
 
-import com.arrr.piratery.commons.base.error.BaseEntityError;
 import com.arrr.piratery.commons.base.error.EntityError;
-import com.arrr.piratery.commons.base.types.PersistenceObject;
-import com.arrr.piratery.commons.base.validation.BaseEntityValidation;
+import com.arrr.piratery.commons.base.types.Entity;
 import com.arrr.piratery.commons.base.validation.EntityValidation;
 import java.util.Collection;
 import lombok.AllArgsConstructor;
@@ -16,17 +14,11 @@ import reactor.core.publisher.Mono;
 @Getter
 @AllArgsConstructor
 @Slf4j
-public class EntityRepository<E extends PersistenceObject> {
+public class EntityService<E extends Entity> {
 
-  protected final EntityError<E> entityError;
+  protected final EntityError entityError;
   protected final EntityValidation<E> entityValidation;
   protected final ReactiveCrudRepository<E, String> repository;
-
-  public EntityRepository(Class<E> entityClass, ReactiveCrudRepository<E, String> repository) {
-    this.repository = repository;
-    this.entityError = BaseEntityError.forClass(entityClass);
-    this.entityValidation = new BaseEntityValidation<>(entityError, repository);
-  }
 
   public Mono<E> get(String entityId) {
     return repository.findById(entityId)

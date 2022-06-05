@@ -1,6 +1,6 @@
-package com.arrr.piratery.services.domain;
+package com.arrr.piratery.services.domain.treasure;
 
-import com.arrr.piratery.commons.base.EntityRepository;
+import com.arrr.piratery.commons.base.services.EntityService;
 import com.arrr.piratery.domain.QTreasure;
 import com.arrr.piratery.domain.Treasure;
 import com.arrr.piratery.ports.domain.TreasureRepository;
@@ -12,15 +12,17 @@ import reactor.core.publisher.Flux;
 
 @Service
 @Getter
-public class TreasureService extends EntityRepository<Treasure> {
+public class TreasureService extends EntityService<Treasure> {
 
   private final TreasureRepository repository;
   private static final float DEFAULT_RADIUS = 10F;
 
-  public TreasureService(TreasureRepository repository) {
-    super(Treasure.class, repository);
+  public TreasureService(TreasureValidation treasureValidation, TreasureError treasureError,
+      TreasureRepository repository) {
+    super(treasureError, treasureValidation, repository);
     this.repository = repository;
   }
+
 
   public static BooleanBuilder inRadiusPredicate(float x, float y, float radius) {
     var query = QTreasure.treasure.position;

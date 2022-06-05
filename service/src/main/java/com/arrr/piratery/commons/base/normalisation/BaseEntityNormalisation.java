@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
 public class BaseEntityNormalisation<PO extends PersistenceObject, DO extends DomainObject> implements
     EntityNormalisation<PO, DO> {
 
-  protected final EntityMapper<DO, PO> mapper;
+  protected final EntityMapper<PO, DO> mapper;
 
   @Override
   public PO toPO(DO domainObject) {
@@ -19,12 +19,7 @@ public class BaseEntityNormalisation<PO extends PersistenceObject, DO extends Do
   }
 
   @Override
-  public DO partialToDO(PO persistenceObject) {
-    return mapper.partialToDO(persistenceObject);
-  }
-
-  @Override
   public Mono<DO> toDO(PO persistenceObject) {
-    return Mono.just(partialToDO(persistenceObject));
+    return Mono.just(mapper.partialToDO(persistenceObject));
   }
 }

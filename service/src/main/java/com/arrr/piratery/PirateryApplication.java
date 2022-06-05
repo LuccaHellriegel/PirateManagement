@@ -1,9 +1,12 @@
 package com.arrr.piratery;
 
+import com.arrr.piratery.ports.domain.crew.CrewPO;
 import com.arrr.piratery.domain.Position;
 import com.arrr.piratery.domain.Treasure;
+import com.arrr.piratery.ports.domain.crew.CrewRepository;
 import com.arrr.piratery.ports.domain.TreasureRepository;
 import java.math.BigDecimal;
+import java.util.Set;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,7 +21,8 @@ public class PirateryApplication {
   }
 
   @Bean
-  public CommandLineRunner demo(TreasureRepository treasureRepository) {
+  public CommandLineRunner demo(TreasureRepository treasureRepository,
+      CrewRepository crewRepository) {
     return (args) -> {
       Treasure treasure1 = new Treasure("id1", "Owner1", new Position(1, 2),
           BigDecimal.valueOf(10));
@@ -29,8 +33,18 @@ public class PirateryApplication {
       Treasure treasure4 = new Treasure("id4", "Owner4", new Position(300, 400),
           BigDecimal.valueOf(20));
 
-      Flux.just(treasure1, treasure2, treasure3, treasure4).map(treasureRepository::save)
+      var treasureFlux = Flux.just(treasure1, treasure2, treasure3, treasure4)
+          .map(treasureRepository::save)
           .subscribe(result -> System.out.println("Created treasure : " + result.block()));
+
+      CrewPO crewPO1 = new CrewPO("crewId1", "crew1", 5, Set.of("id1"));
+      CrewPO crewPO2 = new CrewPO("crewId2", "crew3", 10, Set.of());
+      CrewPO crewPO3 = new CrewPO("crewId3", "crew3", 15, Set.of());
+
+      var crewFlux = Flux.just(crewPO1, crewPO2, crewPO3).map(crewRepository::save)
+          .subscribe(result -> System.out.println("Created crew : " + result.block()));
+
+
     };
   }
 

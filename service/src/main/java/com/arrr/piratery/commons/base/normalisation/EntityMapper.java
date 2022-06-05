@@ -1,6 +1,6 @@
 package com.arrr.piratery.commons.base.normalisation;
 
-public interface EntityMapper<DO,PO> {
+public interface EntityMapper<PO, DO> {
 
   DO partialToDO(PO persistenceObject);
 

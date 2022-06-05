@@ -1,8 +1,8 @@
 package com.arrr.piratery.commons.base.validation;
 
+import com.arrr.piratery.commons.base.error.EntityError;
 import com.arrr.piratery.commons.base.types.DomainObject;
 import com.arrr.piratery.commons.base.types.PersistenceObject;
-import com.arrr.piratery.commons.base.error.NormalisingEntityError;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Mono;
 
@@ -11,16 +11,12 @@ import reactor.core.publisher.Mono;
  * service.
  */
 public class BaseNormalisingEntityValidation<PO extends PersistenceObject, DO extends DomainObject> extends
-    BaseEntityValidation<PO> implements NormalisingEntityValidation<PO,DO> {
-
-  protected final NormalisingEntityError<PO,DO> entityError;
+    BaseEntityValidation<PO> implements NormalisingEntityValidation<PO, DO> {
 
   public BaseNormalisingEntityValidation(
-      NormalisingEntityError<PO,DO> entityError,
+      EntityError entityError,
       ReactiveCrudRepository<PO, String> repository) {
     super(entityError, repository);
-    this.entityError = entityError;
-
   }
 
   /**
@@ -49,7 +45,7 @@ public class BaseNormalisingEntityValidation<PO extends PersistenceObject, DO ex
   public Mono<DO> validateEntityProps(DO domainObject) {
     return hasValidProperties(domainObject).map(isValid -> {
       if (!isValid) {
-        throw entityError.invalid(domainObject);
+        throw entityError.invalid();
       }
       return domainObject;
     });

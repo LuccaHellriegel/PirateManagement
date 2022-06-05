@@ -8,8 +8,6 @@ public interface EntityNormalisation<PO extends PersistenceObject, DO extends Do
 
   PO toPO(DO domainObject);
 
-  DO partialToDO(PO persistenceObject);
-
   Mono<DO> toDO(PO persistenceObject);
 
 

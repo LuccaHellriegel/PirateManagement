@@ -1,8 +1,8 @@
-package com.arrr.piratery.commons.base;
+package com.arrr.piratery.commons.base.controllers;
 
 
-import com.arrr.piratery.commons.base.types.PersistenceObject;
-import java.net.URI;
+import com.arrr.piratery.commons.base.services.EntityService;
+import com.arrr.piratery.commons.base.types.Entity;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,19 +10,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * We provide the most common endpoints: get entity and get all entities. Creation, updating and
- * deletion are usually more involved.
- */
 @AllArgsConstructor
-abstract public class BaseEntityController<E extends PersistenceObject> extends BaseController {
+public abstract class GetEntityController<E extends Entity> extends BaseController {
 
-  public final EntityRepository<E> service;
-  public final String context;
-
-  public URI toURI(E entity) {
-    return URI.create(BASE_PATH + "/" + context + "/" + entity.getId());
-  }
+  public final EntityService<E> service;
 
   @GetMapping()
   public Mono<ResponseEntity<Flux<E>>> getAll() {

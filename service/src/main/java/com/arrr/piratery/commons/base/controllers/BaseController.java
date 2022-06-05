@@ -1,4 +1,4 @@
-package com.arrr.piratery.commons.base;
+package com.arrr.piratery.commons.base.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
