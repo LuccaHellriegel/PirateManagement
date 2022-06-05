@@ -18,6 +18,11 @@ public class GetDomainObjectController<PO extends PersistenceObject, DO extends 
     BaseController {
 
   public final NormalisingEntityService<PO, DO> service;
+  public final String context;
+
+  public URI toURI(DO domainObject) {
+    return URI.create(BASE_PATH + "/" + context + "/" + domainObject.getId());
+  }
 
   @GetMapping()
   public Mono<ResponseEntity<Flux<DO>>> getAll() {

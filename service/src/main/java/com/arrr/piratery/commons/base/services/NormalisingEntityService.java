@@ -1,11 +1,9 @@
 package com.arrr.piratery.commons.base.services;
 
-import com.arrr.piratery.commons.base.error.EntityError;
-import com.arrr.piratery.commons.base.normalisation.EntityNormalisation;
 import com.arrr.piratery.commons.base.types.DomainObject;
 import com.arrr.piratery.commons.base.types.PersistenceObject;
-import com.arrr.piratery.commons.base.validation.NormalisingEntityValidation;
-import com.arrr.piratery.ports.domain.crew.CrewMapper;
+import com.arrr.piratery.crew.domain.Crew;
+import com.arrr.piratery.crew.ports.domain.CrewPO;
 import java.util.Collection;
 import lombok.Getter;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
@@ -13,41 +11,58 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Getter
-public class NormalisingEntityService<PO extends PersistenceObject, DO extends DomainObject> extends
+public abstract class NormalisingEntityService<PO extends PersistenceObject, DO extends DomainObject> extends
     EntityService<PO> {
 
-  protected final EntityNormalisation<PO, DO> entityNormalisation;
-  protected final NormalisingEntityValidation<PO, DO> entityValidation;
+  protected final EntityMapper<PO, DO> mapper;
 
   public NormalisingEntityService(
-      EntityNormalisation<PO, DO> entityNormalisation,
-      EntityError entityError,
-      NormalisingEntityValidation<PO, DO> entityValidation,
-      ReactiveCrudRepository<PO, String> repository) {
-    super(entityError, entityValidation, repository);
-    this.entityNormalisation = entityNormalisation;
-    this.entityValidation = entityValidation;
+      Class<PO> entityClass,
+      ReactiveCrudRepository<PO, String> repository,
+      EntityMapper<PO, DO> mapper) {
+    super(entityClass, repository);
+    this.mapper = mapper;
+  }
+
+  public PO toPO(DO domainObject) {
+    return mapper.toPO(domainObject);
+  }
+
+  public abstract Mono<DO> toDO(PO persistenceObject);
+
+  public Mono<DO> create(PO persistenceObject) {
+    persistenceObject.setId(null);
+    return toDO(persistenceObject).flatMap(this::validate).flatMap(this::save);
   }
 
   public Mono<DO> getDO(String entityId) {
-    return get(entityId).flatMap(entityNormalisation::toDO);
+    return get(entityId).flatMap(this::toDO);
   }
 
   public Flux<DO> getDOs(Collection<String> ids) {
-    return get(ids).flatMap(entityNormalisation::toDO);
+    return get(ids).flatMap(this::toDO);
   }
 
   public Flux<DO> getAllDOs() {
-    return getAll().flatMap(entityNormalisation::toDO);
+    return getAll().flatMap(this::toDO);
+  }
+
+  public abstract Mono<DO> validate(DO domainObject);
+
+  /**
+   * This method will probably not be used. This is just to make sure we always use the DO-validate
+   * by default. Using the original PO-validate by accident might be catastrophic.
+   */
+  @Override
+  public Mono<PO> validate(PO persistenceObject) {
+    return toDO(persistenceObject).flatMap(this::validate).thenReturn(persistenceObject);
   }
 
   public Mono<DO> save(DO domainObject) {
-    return entityValidation.validate(domainObject)
-        .map(entityNormalisation::toPO)
-        .flatMap(repository::save).thenReturn(domainObject);
+    return validate(domainObject)
+        .map(this::toPO)
+        .flatMap(repository::save)
+        .thenReturn(domainObject);
   }
 
-  public Mono<DO> upsert(PO persistenceObject) {
-    return entityNormalisation.toDO(persistenceObject).flatMap(this::save);
-  }
 }
