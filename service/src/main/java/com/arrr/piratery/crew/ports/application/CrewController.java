@@ -3,8 +3,10 @@ package com.arrr.piratery.crew.ports.application;
 import static com.arrr.piratery.commons.base.controllers.BaseController.BASE_PATH;
 
 import com.arrr.piratery.commons.base.controllers.GetDomainObjectController;
+import com.arrr.piratery.commons.services.domain.AssignmentService;
+import com.arrr.piratery.commons.services.domain.BaseCrewService;
 import com.arrr.piratery.crew.domain.Crew;
-import com.arrr.piratery.crew.ports.domain.CrewPO;
+import com.arrr.piratery.commons.ports.domain.CrewPO;
 import com.arrr.piratery.crew.services.domain.CrewService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -22,20 +24,23 @@ import reactor.core.publisher.Mono;
 public class CrewController extends GetDomainObjectController<CrewPO, Crew> {
 
   private final CrewService service;
+  private final AssignmentService assignmentService;
 
-  public CrewController(CrewService service) {
+  public CrewController(CrewService service,
+      AssignmentService assignmentService) {
     super(service, "crews");
     this.service = service;
-  }
-
-  @PatchMapping("/{id}/assign")
-  public Mono<ResponseEntity<Crew>> assignTreasure(@PathVariable String id,
-      @RequestParam String treasure) {
-    return service.assignTreasure(id, treasure).map(ResponseEntity::ok);
+    this.assignmentService = assignmentService;
   }
 
   @PostMapping()
   public Mono<ResponseEntity<Crew>> create(@RequestBody @Validated CrewPO entity) {
     return service.create(entity).map(t -> ResponseEntity.created(toURI(t)).body(t));
+  }
+
+  @PatchMapping("/{id}/assign")
+  public Mono<ResponseEntity<Crew>> assignTreasure(@PathVariable String id,
+      @RequestParam String treasure) {
+    return assignmentService.assignTreasure(id, treasure).map(ResponseEntity::ok);
   }
 }

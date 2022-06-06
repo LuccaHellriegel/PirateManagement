@@ -1,4 +1,4 @@
-package com.arrr.piratery.crew.ports.domain;
+package com.arrr.piratery.commons.ports.domain;
 
 import com.arrr.piratery.commons.base.types.PersistenceObject;
 import java.util.Set;

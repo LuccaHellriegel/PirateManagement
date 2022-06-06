@@ -1,4 +1,4 @@
-package com.arrr.piratery.treasure.domain;
+package com.arrr.piratery.commons.ports.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

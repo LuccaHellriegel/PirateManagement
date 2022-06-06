@@ -1,27 +1,28 @@
 package com.arrr.piratery.treasure.domain;
 
-import com.arrr.piratery.commons.base.types.PersistenceObject;
+import com.arrr.piratery.commons.base.types.DomainObject;
+import com.arrr.piratery.commons.ports.domain.Position;
 import java.math.BigDecimal;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @AllArgsConstructor
-@Document("treasures")
-public class Treasure implements PersistenceObject {
+public class Treasure implements DomainObject {
 
-  @Id
   private String id;
-  @NotBlank
   private String name;
-  @NotBlank
   private String owner;
-  @NotNull
   private Position position;
-  @NotNull
   private BigDecimal size;
+  private Set<CrewDetails> assignedCrews;
+
+  public Treasure assignCrew(CrewDetails crewDetails) {
+    var newAssignedCrews = new HashSet<>(assignedCrews);
+    newAssignedCrews.add(crewDetails);
+    this.assignedCrews = newAssignedCrews;
+    return this;
+  }
 }

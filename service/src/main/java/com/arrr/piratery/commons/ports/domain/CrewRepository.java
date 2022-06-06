@@ -1,4 +1,4 @@
-package com.arrr.piratery.crew.ports.domain;
+package com.arrr.piratery.commons.ports.domain;
 
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import org.springframework.data.querydsl.ReactiveQuerydslPredicateExecutor;

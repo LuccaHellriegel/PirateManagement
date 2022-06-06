@@ -2,13 +2,17 @@ package com.arrr.piratery.treasure.ports.application;
 
 import static com.arrr.piratery.commons.base.controllers.GetEntityController.BASE_PATH;
 
-import com.arrr.piratery.commons.base.controllers.GetEntityController;
+import com.arrr.piratery.commons.base.controllers.GetDomainObjectController;
+import com.arrr.piratery.commons.ports.domain.TreasurePO;
+import com.arrr.piratery.commons.services.domain.AssignmentService;
 import com.arrr.piratery.treasure.domain.Treasure;
 import com.arrr.piratery.treasure.services.domain.TreasureService;
 import java.util.Optional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,13 +23,15 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping(BASE_PATH + "/treasures")
-public class TreasureController extends GetEntityController<Treasure> {
+public class TreasureController extends GetDomainObjectController<TreasurePO, Treasure> {
 
   private final TreasureService service;
+  private final AssignmentService assignmentService;
 
-  public TreasureController(TreasureService service) {
+  public TreasureController(TreasureService service, AssignmentService assignmentService) {
     super(service, "treasures");
     this.service = service;
+    this.assignmentService = assignmentService;
   }
 
   @GetMapping("/radius")
@@ -35,10 +41,15 @@ public class TreasureController extends GetEntityController<Treasure> {
   }
 
   @PostMapping()
-  public Mono<ResponseEntity<Treasure>> create(@RequestBody @Validated Treasure entity) {
+  public Mono<ResponseEntity<Treasure>> create(@RequestBody @Validated TreasurePO entity) {
     entity.setId(null);
-    return service.save(entity).map(t -> ResponseEntity.created(toURI(t)).body(t));
+    return service.create(entity).map(t -> ResponseEntity.created(toURI(t)).body(t));
   }
 
+  @PatchMapping("/{id}/assign")
+  public Mono<ResponseEntity<Treasure>> assignCrew(@PathVariable String id,
+      @RequestParam String crew) {
+    return assignmentService.assignCrew(crew, id).map(ResponseEntity::ok);
+  }
 
 }

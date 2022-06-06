@@ -2,8 +2,8 @@ package com.arrr.piratery.crew.domain;
 
 import com.arrr.piratery.commons.base.exceptions.InvalidEntityException;
 import com.arrr.piratery.commons.base.types.DomainObject;
-import com.arrr.piratery.treasure.domain.Treasure;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,10 +15,10 @@ public class Crew implements DomainObject {
   private String id;
   private String name;
   private int capacity;
-  private Set<Treasure> assignedTreasures;
+  private Set<TreasureDetails> assignedTreasures;
 
   public Crew validate() {
-    var treasureSize = assignedTreasures.stream().map(Treasure::getSize).reduce(
+    var treasureSize = assignedTreasures.stream().map(TreasureDetails::getSize).reduce(
         BigDecimal.valueOf(0), BigDecimal::add);
     if (treasureSize.compareTo(BigDecimal.valueOf(capacity)) > 0) {
       throw new InvalidEntityException(this.getClass(),
@@ -27,4 +27,13 @@ public class Crew implements DomainObject {
 
     return this;
   }
+
+  public Crew assignTreasure(TreasureDetails treasureDetails) {
+    //duplicate assignments are just swallowed
+    var newTreasures = new HashSet<>(getAssignedTreasures());
+    newTreasures.add(treasureDetails);
+    setAssignedTreasures(newTreasures);
+    return this;
+  }
+
 }
