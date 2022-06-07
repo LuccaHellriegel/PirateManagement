@@ -6,7 +6,8 @@ A collection of best practices I want to remember and a playground to experiment
 But with a good pinch of real world complexity - a simple TODO app is not enough to document these
 patterns.
 And while we are at it, the code needs to be potentially Microservice ready - so a modular Monolith.
-Just in case if the whole pirate world suddenly uses our app.
+Just in case if the whole pirate world suddenly uses our app. 
+Obviously the app would be much simpler without that.
 
 The tricky part of the example app is that pirates and crews might not be the same users,
 so we need to hide most of the information from each other while still allowing interactions

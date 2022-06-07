@@ -16,15 +16,12 @@ import reactor.core.publisher.Mono;
 @Service
 @Getter
 @AllArgsConstructor
-public class BaseCrewService implements
-    GetDOMixin<CrewPO, Crew>,
-    SaveDOMixin<CrewPO, Crew>,
-    ValidateDOMixin<CrewPO, Crew> {
+public class GetCrewService implements
+    GetDOMixin<CrewPO, Crew> {
 
   protected final CrewMapper mapper;
   protected final BaseTreasureService treasureService;
   protected final CrewRepository repository;
-
 
   @Override
   public Mono<Crew> toDO(CrewPO po) {
@@ -41,8 +38,4 @@ public class BaseCrewService implements
     return CrewPO.class;
   }
 
-  @Override
-  public Mono<Crew> validate(Crew domainObject) {
-    return Mono.just(domainObject.validate());
-  }
 }
