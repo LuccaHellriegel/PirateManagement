@@ -3,8 +3,12 @@
 An app for pirates to manage their treasure hunts and for crews to apply to hunt those treasures.
 Arrrr!
 A collection of best practices I want to remember and a playground to experiment.
-But with a good pinch of real world complexity - a simple TODO app is not enough to document these
+
+## The App(s)
+
+A good pinch of real world complexity is needed - a simple TODO app is not enough to document these
 patterns.
+
 And while we are at it, the code needs to be potentially Microservice ready - so a modular Monolith.
 Just in case if the whole pirate world suddenly uses our app. 
 Obviously the app would be much simpler without that.
@@ -14,6 +18,8 @@ so we need to hide most of the information from each other while still allowing 
 (e.g. a crew assigns a treasure to itself but does not see the position).
 Otherwise, you could just dump all the data into a huge collection and be done.
 But that would be no real world scenario.
+
+The first app variant is with Spring Boot because that's what I am currently working with a lot.
 
 ## Architecture
 
