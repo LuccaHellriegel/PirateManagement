@@ -1,7 +1,7 @@
 package com.arrr.piratery.commons.base.controllers;
 
 
-import com.arrr.piratery.commons.base.services.GetEntityMixin;
+import com.arrr.piratery.commons.base.services.entity.GetEntityMixin;
 import com.arrr.piratery.commons.base.types.Entity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

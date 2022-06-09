@@ -1,8 +1,6 @@
-package com.arrr.piratery.commons.base.services;
+package com.arrr.piratery.commons.base.services.entity;
 
 import com.arrr.piratery.commons.base.types.Entity;
-import com.arrr.piratery.commons.ports.domain.CrewPO;
-import com.arrr.piratery.crew.domain.Crew;
 import reactor.core.publisher.Mono;
 
 public interface CreateEntityMixin<E extends Entity> extends ValidateEntityMixin<E> {

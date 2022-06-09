@@ -1,18 +1,17 @@
-package com.arrr.piratery.commons.base.services;
+package com.arrr.piratery.commons.base.services.entity;
 
 import com.arrr.piratery.commons.base.exceptions.EntityNotFoundException;
+import com.arrr.piratery.commons.base.services.core.GetEntityClass;
+import com.arrr.piratery.commons.base.services.core.GetRepository;
 import com.arrr.piratery.commons.base.types.Entity;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface GetEntityMixin<E extends Entity>
-    extends GetRepository<E> {
-
-  Class<E> getEntityClass();
+    extends GetRepository<E>, GetEntityClass<E> {
 
   default Mono<E> get(String entityId) {
     return getRepository().findById(entityId)
@@ -38,6 +37,10 @@ public interface GetEntityMixin<E extends Entity>
     });
   }
 
+  default <I> Mono<I> validateExistence(Collection<String> ids, I result) {
+    return validateExistence(ids).thenReturn(result);
+  }
+
   default Mono<Void> validateExistence(String id) {
     return getRepository().existsById(id).flatMap(exists -> {
           if (!exists) {
@@ -46,5 +49,9 @@ public interface GetEntityMixin<E extends Entity>
           return Mono.empty();
         }
     );
+  }
+
+  default <I> Mono<I> validateExistence(String id, I result) {
+    return validateExistence(id).thenReturn(result);
   }
 }

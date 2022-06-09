@@ -1,6 +1,6 @@
 package com.arrr.piratery.commons.services.domain;
 
-import com.arrr.piratery.commons.base.services.GetDOMixin;
+import com.arrr.piratery.commons.base.services.norm.GetDOMixin;
 import com.arrr.piratery.commons.ports.domain.CrewMapper;
 import com.arrr.piratery.commons.ports.domain.CrewPO;
 import com.arrr.piratery.commons.ports.domain.CrewRepository;

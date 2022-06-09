@@ -1,6 +1,6 @@
 package com.arrr.piratery.commons.base.controllers;
 
-import com.arrr.piratery.commons.base.services.GetDOMixin;
+import com.arrr.piratery.commons.base.services.norm.GetDOMixin;
 import com.arrr.piratery.commons.base.types.DomainObject;
 import com.arrr.piratery.commons.base.types.PersistenceObject;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.arrr.piratery.commons.base.services;
+package com.arrr.piratery.commons.base.services.core;
 
 import com.arrr.piratery.commons.base.types.Entity;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;

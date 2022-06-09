@@ -1,5 +1,6 @@
-package com.arrr.piratery.commons.base.services;
+package com.arrr.piratery.commons.base.services.norm;
 
+import com.arrr.piratery.commons.base.services.entity.GetEntityMixin;
 import com.arrr.piratery.commons.base.types.DomainObject;
 import com.arrr.piratery.commons.base.types.PersistenceObject;
 import java.util.Collection;

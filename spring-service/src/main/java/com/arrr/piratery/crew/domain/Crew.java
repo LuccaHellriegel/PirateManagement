@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import reactor.core.publisher.Mono;
 
 @Data
 @AllArgsConstructor
@@ -17,7 +18,7 @@ public class Crew implements DomainObject {
   private int capacity;
   private Set<TreasureDetails> assignedTreasures;
 
-  public Crew validate() {
+  public Mono<Crew> validate() {
     var treasureSize = assignedTreasures.stream().map(TreasureDetails::getSize).reduce(
         BigDecimal.valueOf(0), BigDecimal::add);
     if (treasureSize.compareTo(BigDecimal.valueOf(capacity)) > 0) {
@@ -25,7 +26,7 @@ public class Crew implements DomainObject {
           "Crew " + id + "'s capacity was exceeded by the assigned treasures.");
     }
 
-    return this;
+    return Mono.just(this);
   }
 
   public Crew assignTreasure(TreasureDetails treasureDetails) {

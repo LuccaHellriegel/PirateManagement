@@ -1,7 +1,7 @@
-package com.arrr.piratery.commons.base.services;
+package com.arrr.piratery.commons.base.services.entity;
 
+import com.arrr.piratery.commons.base.services.core.GetRepository;
 import com.arrr.piratery.commons.base.types.Entity;
-import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Mono;
 
 public interface SaveEntityMixin<E extends Entity>

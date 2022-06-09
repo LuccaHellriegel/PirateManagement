@@ -1,6 +1,6 @@
 package com.arrr.piratery.commons.ports.domain;
 
-import com.arrr.piratery.commons.base.services.EntityMapper;
+import com.arrr.piratery.commons.base.services.norm.EntityMapper;
 import com.arrr.piratery.crew.domain.Crew;
 import com.arrr.piratery.treasure.domain.CrewDetails;
 import com.arrr.piratery.treasure.domain.Treasure;
