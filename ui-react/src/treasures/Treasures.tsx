@@ -4,7 +4,7 @@ import { useApi } from "../ApiContext";
 
 export const Treasures: FC = () => {
   const { treasureApi } = useApi();
-  const treasureQuery = useQuery("treasures", () => treasureApi.getAll());
+  const treasureQuery = useQuery("treasures", () => treasureApi.getTreasures());
 
   return (
     <div>

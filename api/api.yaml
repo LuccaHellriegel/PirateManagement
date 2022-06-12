@@ -10,7 +10,7 @@ paths:
     get:
       tags:
       - treasure-controller
-      operationId: getAll
+      operationId: getTreasures
       responses:
         "200":
           description: OK
@@ -41,7 +41,7 @@ paths:
     get:
       tags:
       - crew-controller
-      operationId: getAll_1
+      operationId: getCrews
       responses:
         "200":
           description: OK
@@ -68,11 +68,34 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/Crew'
+  /api/v1/treasures/{id}/assignedCrews:
+    patch:
+      tags:
+      - treasure-controller
+      operationId: assignCrew
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: crew
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Treasure'
   /api/v1/treasures/{id}:
     get:
       tags:
       - treasure-controller
-      operationId: get
+      operationId: getTreasure
       parameters:
       - name: id
         in: path
@@ -123,7 +146,7 @@ paths:
     get:
       tags:
       - crew-controller
-      operationId: get_1
+      operationId: getCrew
       parameters:
       - name: id
         in: path
@@ -137,6 +160,70 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/Crew'
+  /api/v1/available-treasures:
+    get:
+      tags:
+      - available-treasure-controller
+      operationId: getAvailableTreasures
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AvailableTreasure'
+  /api/v1/available-treasures/{id}:
+    get:
+      tags:
+      - available-treasure-controller
+      operationId: getAvailableTreasure
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AvailableTreasure'
+  /api/v1/available-crews:
+    get:
+      tags:
+      - available-crew-controller
+      operationId: getAvailableCrews
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AvailableCrew'
+  /api/v1/available-crews/{id}:
+    get:
+      tags:
+      - available-crew-controller
+      operationId: getAvailableCrew
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AvailableCrew'
 components:
   schemas:
     Position:

@@ -1,9 +1,9 @@
 package com.arrr.piratery.treasure.ports.application;
 
-import static com.arrr.piratery.commons.base.controllers.GetEntityController.BASE_PATH;
+import static com.arrr.piratery.commons.base.controllers.BaseController.BASE_PATH;
 
-import com.arrr.piratery.commons.base.controllers.GetDomainObjectController;
-import com.arrr.piratery.commons.services.domain.AssignmentService;
+import com.arrr.piratery.commons.base.mixins.controllers.GetDOControllerMixin;
+import com.arrr.piratery.commons.base.mixins.controllers.ToURIMixin;
 import com.arrr.piratery.treasure.domain.Treasure;
 import com.arrr.piratery.treasure.ports.domain.TreasurePO;
 import com.arrr.piratery.treasure.services.domain.TreasureService;
@@ -13,6 +13,8 @@ import lombok.Getter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,10 +27,11 @@ import reactor.core.publisher.Mono;
 @RequestMapping(BASE_PATH + "/treasures")
 @Getter
 @AllArgsConstructor
-public class TreasureController implements GetDomainObjectController<TreasurePO, Treasure> {
+public class TreasureController implements
+    GetDOControllerMixin<TreasurePO, Treasure>,
+    ToURIMixin<Treasure> {
 
   private final TreasureService service;
-  private final AssignmentService assignmentService;
   private final String context = "treasures";
 
   @GetMapping("/radius")
@@ -38,16 +41,26 @@ public class TreasureController implements GetDomainObjectController<TreasurePO,
     return Mono.just(ResponseEntity.ok(service.getTreasuresInRadius(x, y, radius)));
   }
 
+  @GetMapping
+  public Mono<ResponseEntity<Flux<Treasure>>> getTreasures() {
+    return getAll();
+  }
+
+  @GetMapping("/{id}")
+  public Mono<ResponseEntity<Treasure>> getTreasure(@PathVariable String id) {
+    return get(id);
+  }
+
   @PostMapping()
   public Mono<ResponseEntity<Treasure>> create(@RequestBody @Validated TreasurePO entity) {
     entity.setId(null);
     return service.create(entity).map(t -> ResponseEntity.created(toURI(t)).body(t));
   }
 
-//  @PatchMapping("/{id}/assign")
-//  public Mono<ResponseEntity<Treasure>> assignCrew(@PathVariable String id,
-//      @RequestParam String crew) {
-//    return assignmentService.assignCrew(crew, id).map(ResponseEntity::ok);
-//  }
+  @PatchMapping("/{id}/assignedCrews")
+  public Mono<ResponseEntity<Treasure>> assignCrew(@PathVariable String id,
+      @RequestParam String crew) {
+    return service.assign(crew, id).map(ResponseEntity::ok);
+  }
 
 }

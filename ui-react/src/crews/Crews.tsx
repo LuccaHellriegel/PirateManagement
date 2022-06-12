@@ -4,7 +4,7 @@ import { useApi } from "../ApiContext";
 
 export const Crews: FC = () => {
   const { crewApi } = useApi();
-  const crewQuery = useQuery("crews", () => crewApi.getAll1());
+  const crewQuery = useQuery("crews", () => crewApi.getCrews());
 
   return (
     <div>
