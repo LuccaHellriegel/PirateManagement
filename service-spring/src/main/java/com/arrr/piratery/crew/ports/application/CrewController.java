@@ -23,6 +23,8 @@ import reactor.core.publisher.Mono;
 @Getter
 public class CrewController implements GetDomainObjectController<CrewPO, Crew> {
 
+  //TODO: annotation for error object
+
   private final CrewService service;
   private final AssignmentService assignmentService;
   private final String context = "crews";
@@ -32,9 +34,4 @@ public class CrewController implements GetDomainObjectController<CrewPO, Crew> {
     return service.create(entity).map(t -> ResponseEntity.created(toURI(t)).body(t));
   }
 
-//  @PatchMapping("/{id}/assign")
-//  public Mono<ResponseEntity<Crew>> assignTreasure(@PathVariable String id,
-//      @RequestParam String treasure) {
-//    return assignmentService.assignTreasure(id, treasure).map(ResponseEntity::ok);
-//  }
 }

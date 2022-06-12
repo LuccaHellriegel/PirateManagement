@@ -1,45 +1,32 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import { FC, useEffect, useState } from "react";
+import { ApiProvider, useApi } from "./ApiContext";
+import { Crew, Treasure } from "./generated";
 
-function App() {
-  const [count, setCount] = useState(0)
+const Cmp: FC = () => {
+  const { treasureApi, crewApi } = useApi();
+  const [treasures, setTreasures] = useState<Treasure[]>([]);
+  const [crews, setCrews] = useState<Crew[]>([]);
+
+  useEffect(() => {
+    treasureApi.getAll().then((treasures) => setTreasures(treasures));
+    //TODO: find out how to disalbe the numbering
+    crewApi.getAll1().then((crews) => setCrews(crews));
+  }, []);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
+    <div>
+      {JSON.stringify(treasures)}
+      {JSON.stringify(crews)}
     </div>
-  )
+  );
+};
+
+function App() {
+  return (
+    <ApiProvider>
+      <Cmp />
+    </ApiProvider>
+  );
 }
 
-export default App
+export default App;

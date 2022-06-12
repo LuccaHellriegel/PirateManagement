@@ -2,6 +2,6 @@ pushd .
 cd ..
 mvn spring-boot:run &
 FOO_PID=$!
-sleep 7
+sleep 15
 mvn springdoc-openapi:generate && kill $FOO_PID
 popd

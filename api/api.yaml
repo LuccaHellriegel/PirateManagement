@@ -10,7 +10,7 @@ paths:
     get:
       tags:
       - treasure-controller
-      operationId: getTreasures
+      operationId: getAll
       responses:
         "200":
           description: OK
@@ -23,12 +23,12 @@ paths:
     post:
       tags:
       - treasure-controller
-      operationId: createTreasure
+      operationId: create
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Treasure'
+              $ref: '#/components/schemas/TreasurePO'
         required: true
       responses:
         "200":
@@ -37,11 +37,42 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/Treasure'
+  /api/v1/crews:
+    get:
+      tags:
+      - crew-controller
+      operationId: getAll_1
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Crew'
+    post:
+      tags:
+      - crew-controller
+      operationId: create_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CrewPO'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Crew'
   /api/v1/treasures/{id}:
     get:
       tags:
       - treasure-controller
-      operationId: getTreasure
+      operationId: get
       parameters:
       - name: id
         in: path
@@ -55,10 +86,44 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/Treasure'
-    delete:
+  /api/v1/treasures/radius:
+    get:
       tags:
       - treasure-controller
-      operationId: deleteTreasure
+      operationId: getTreasuresInRadius
+      parameters:
+      - name: x
+        in: query
+        required: true
+        schema:
+          type: number
+          format: float
+      - name: "y"
+        in: query
+        required: true
+        schema:
+          type: number
+          format: float
+      - name: radius
+        in: query
+        required: false
+        schema:
+          type: number
+          format: float
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Treasure'
+  /api/v1/crews/{id}:
+    get:
+      tags:
+      - crew-controller
+      operationId: get_1
       parameters:
       - name: id
         in: path
@@ -68,6 +133,10 @@ paths:
       responses:
         "200":
           description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Crew'
 components:
   schemas:
     Position:
@@ -79,8 +148,10 @@ components:
         "y":
           type: number
           format: float
-    Treasure:
+    TreasurePO:
       required:
+      - assignedCrews
+      - name
       - owner
       - position
       - size
@@ -88,9 +159,84 @@ components:
       properties:
         id:
           type: string
+        name:
+          type: string
         owner:
           type: string
         position:
           $ref: '#/components/schemas/Position'
         size:
           type: number
+        assignedCrews:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+    AvailableCrew:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    Treasure:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        owner:
+          type: string
+        position:
+          $ref: '#/components/schemas/Position'
+        size:
+          type: number
+        assignedCrews:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/AvailableCrew'
+    CrewPO:
+      required:
+      - assignedTreasures
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        capacity:
+          minimum: 0
+          type: integer
+          format: int32
+        assignedTreasures:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+    AvailableTreasure:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        size:
+          type: number
+    Crew:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        capacity:
+          type: integer
+          format: int32
+        assignedTreasures:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/AvailableTreasure'

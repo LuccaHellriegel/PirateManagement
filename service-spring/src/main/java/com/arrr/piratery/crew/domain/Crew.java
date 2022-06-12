@@ -23,7 +23,8 @@ public class Crew implements Entity {
         BigDecimal.valueOf(0), BigDecimal::add);
     if (treasureSize.compareTo(BigDecimal.valueOf(capacity)) > 0) {
       throw new InvalidEntityException(this.getClass(),
-          "Crew " + id + "'s capacity was exceeded by the assigned treasures.");
+          "Crew " + id + "'s capacity " + capacity + " was exceeded by the assigned treasure size "
+              + treasureSize + ".");
     }
 
     return this;

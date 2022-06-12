@@ -40,9 +40,9 @@ public class PirateryApplication {
           .flatMap(treasureService::create)
           .doOnNext(result -> System.out.println("Created treasure : " + result));
 
-      CrewPO crewPO1 = new CrewPO(null, "crew1", 5, Set.of());
-      CrewPO crewPO2 = new CrewPO(null, "crew3", 10, Set.of());
-      CrewPO crewPO3 = new CrewPO(null, "crew3", 15, Set.of());
+      CrewPO crewPO1 = new CrewPO(null, "crew1", 100, Set.of());
+      CrewPO crewPO2 = new CrewPO(null, "crew3", 100, Set.of());
+      CrewPO crewPO3 = new CrewPO(null, "crew3", 150, Set.of());
 
       var crewFlux = Flux.just(crewPO1, crewPO2, crewPO3).flatMap(crewService::create)
           .doOnNext(result -> System.out.println("Created crew : " + result));
