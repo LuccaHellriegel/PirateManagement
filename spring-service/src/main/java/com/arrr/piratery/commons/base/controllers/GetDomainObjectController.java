@@ -1,8 +1,7 @@
 package com.arrr.piratery.commons.base.controllers;
 
-import com.arrr.piratery.commons.base.services.norm.GetDOMixin;
-import com.arrr.piratery.commons.base.types.DomainObject;
-import com.arrr.piratery.commons.base.types.PersistenceObject;
+import com.arrr.piratery.commons.base.mixins.norm.GetDOMixin;
+import com.arrr.piratery.commons.base.types.Entity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,7 +11,7 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 
 
-public interface GetDomainObjectController<PO extends PersistenceObject, DO extends DomainObject> extends
+public interface GetDomainObjectController<PO extends Entity, DO extends Entity> extends
         BaseController {
 
     GetDOMixin<PO, DO> getService();
