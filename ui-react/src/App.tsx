@@ -1,31 +1,37 @@
 import { FC, useEffect, useState } from "react";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { ApiProvider, useApi } from "./ApiContext";
-import { Crew, Treasure } from "./generated";
+import { Crew } from "./generated";
+//TODO: find out how to disable the API method numbering
+
+const queryClient = new QueryClient();
 
 const Cmp: FC = () => {
   const { treasureApi, crewApi } = useApi();
-  const [treasures, setTreasures] = useState<Treasure[]>([]);
-  const [crews, setCrews] = useState<Crew[]>([]);
-
-  useEffect(() => {
-    treasureApi.getAll().then((treasures) => setTreasures(treasures));
-    //TODO: find out how to disalbe the numbering
-    crewApi.getAll1().then((crews) => setCrews(crews));
-  }, []);
+  const treasureQuery = useQuery("treasures", () => treasureApi.getAll());
+  const crewQuery = useQuery("crews", () => crewApi.getAll1());
 
   return (
     <div>
-      {JSON.stringify(treasures)}
-      {JSON.stringify(crews)}
+      Treasures:
+      <br />
+      {JSON.stringify(treasureQuery.data)}
+      <br />
+      <br />
+      Crews:
+      <br />
+      {JSON.stringify(crewQuery.data)}
     </div>
   );
 };
 
 function App() {
   return (
-    <ApiProvider>
-      <Cmp />
-    </ApiProvider>
+    <QueryClientProvider client={queryClient}>
+      <ApiProvider>
+        <Cmp />
+      </ApiProvider>
+    </QueryClientProvider>
   );
 }
 
