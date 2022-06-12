@@ -4,6 +4,7 @@ import com.arrr.piratery.commons.base.types.Entity;
 import com.arrr.piratery.treasure.domain.Position;
 import java.math.BigDecimal;
 import java.util.Set;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -24,7 +25,7 @@ public class TreasurePO implements Entity {
   private String owner;
   @NotNull
   private Position position;
-  @NotNull
+  @Min(0)
   private BigDecimal size;
   @NotNull
   private Set<String> assignedCrews;

@@ -241,7 +241,6 @@ components:
       - name
       - owner
       - position
-      - size
       type: object
       properties:
         id:
@@ -253,6 +252,7 @@ components:
         position:
           $ref: '#/components/schemas/Position'
         size:
+          minimum: 0
           type: number
         assignedCrews:
           uniqueItems: true
@@ -267,6 +267,12 @@ components:
         name:
           type: string
     Treasure:
+      required:
+      - assignedCrews
+      - id
+      - name
+      - owner
+      - position
       type: object
       properties:
         id:
@@ -278,6 +284,7 @@ components:
         position:
           $ref: '#/components/schemas/Position'
         size:
+          minimum: 0
           type: number
         assignedCrews:
           uniqueItems: true
@@ -313,6 +320,10 @@ components:
         size:
           type: number
     Crew:
+      required:
+      - assignedTreasures
+      - id
+      - name
       type: object
       properties:
         id:
@@ -320,6 +331,7 @@ components:
         name:
           type: string
         capacity:
+          minimum: 0
           type: integer
           format: int32
         assignedTreasures:

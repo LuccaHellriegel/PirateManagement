@@ -8,11 +8,13 @@ const queryClient = new QueryClient();
 
 const App: FC = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <ApiProvider>
-        <Outlet />
-      </ApiProvider>
-    </QueryClientProvider>
+    <div style={{ backgroundColor: "lightgray", padding: "8px" }}>
+      <QueryClientProvider client={queryClient}>
+        <ApiProvider>
+          <Outlet />
+        </ApiProvider>
+      </QueryClientProvider>
+    </div>
   );
 };
 
