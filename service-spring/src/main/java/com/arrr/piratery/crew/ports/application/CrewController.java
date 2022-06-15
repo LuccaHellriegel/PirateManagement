@@ -4,7 +4,6 @@ import static com.arrr.piratery.commons.base.controllers.BaseController.BASE_PAT
 
 import com.arrr.piratery.commons.base.mixins.controllers.GetDOControllerMixin;
 import com.arrr.piratery.commons.base.mixins.controllers.ToURIMixin;
-import com.arrr.piratery.commons.services.domain.AssignmentService;
 import com.arrr.piratery.crew.domain.Crew;
 import com.arrr.piratery.crew.ports.domain.CrewPO;
 import com.arrr.piratery.crew.services.domain.CrewService;
@@ -32,7 +31,6 @@ public class CrewController implements
   //TODO: annotation for error object
 
   private final CrewService service;
-  private final AssignmentService assignmentService;
   private final String context = "crews";
 
   @PostMapping()
