@@ -1,0 +1,2 @@
+docker kill mongoContainer
+docker rm mongoContainer
