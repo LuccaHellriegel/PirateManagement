@@ -10,6 +10,7 @@ import (
 
 	"github.com/DeanThompson/ginpprof"
 	"github.com/gin-gonic/gin"
+	"github.com/k0kubun/pp"
 	"github.com/kamva/mgm/v3"
 	"github.com/shopspring/decimal"
 )
@@ -41,14 +42,10 @@ func System() {
 }
 
 func DemoData() {
-	treasure1 := Treasure{mgm.DefaultModel{}, "treasure1", "Owner1", Position{1, 2},
-		decimal.NewFromInt(10), []string{}}
-	treasure2 := Treasure{mgm.DefaultModel{}, "treasure2", "Owner2", Position{2, 3},
-		decimal.NewFromInt(15), []string{}}
-	treasure3 := Treasure{mgm.DefaultModel{}, "treasure3", "Owner3", Position{3, 4},
-		decimal.NewFromInt(20), []string{}}
-	treasure4 := Treasure{mgm.DefaultModel{}, "treasure4", "Owner4", Position{300, 400},
-		decimal.NewFromInt(20), []string{}}
+	treasure1 := Treasure{mgm.DefaultModel{}, "treasure1", "Owner1", Position{1, 2}, decimal.NewFromInt(10), []string{}}
+	treasure2 := Treasure{mgm.DefaultModel{}, "treasure2", "Owner2", Position{2, 3}, decimal.NewFromInt(15), []string{}}
+	treasure3 := Treasure{mgm.DefaultModel{}, "treasure3", "Owner3", Position{3, 4}, decimal.NewFromInt(20), []string{}}
+	treasure4 := Treasure{mgm.DefaultModel{}, "treasure4", "Owner4", Position{300, 400}, decimal.NewFromInt(20), []string{}}
 
 	treasure := CreateTreasure(treasure1)
 	CreateTreasure(treasure2)
@@ -64,6 +61,9 @@ func DemoData() {
 	CreateCrew(crewPO3)
 
 	Assign(treasure.ID.Hex(), crew1.ID.Hex())
+
+	pp.Println(GetAllTreasures())
+	pp.Println(GetAllCrews())
 }
 
 func main() {

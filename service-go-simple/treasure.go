@@ -1,8 +1,6 @@
 package main
 
 import (
-	"encoding/json"
-
 	"github.com/kamva/mgm/v3"
 	"github.com/shopspring/decimal"
 	"go.mongodb.org/mongo-driver/bson"
@@ -15,20 +13,6 @@ type Position struct {
 }
 
 //TODO: couldnt find out how to make deserialisation with the mapset work, it cant find the unmarshal method
-
-type AssignedCrews []string
-
-func (a *AssignedCrews) UnmarshalJSON(data []byte) error {
-
-	var v []string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-
-	*a = v
-
-	return nil
-}
 
 type Treasure struct {
 	mgm.DefaultModel `bson:",inline"`

@@ -18,7 +18,7 @@ func InitDB() {
 	connectionURI := fmt.Sprintf("mongodb://%s:%s@%s", username, password, clusterEndpoint)
 	connectionURI = "mongodb://localhost:27017"
 
-	err := mgm.SetDefaultConfig(nil, "mgm_lab", options.Client().ApplyURI(connectionURI))
+	err := mgm.SetDefaultConfig(nil, "test", options.Client().ApplyURI(connectionURI))
 
 	if err != nil {
 		panic(err)
