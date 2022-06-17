@@ -27,7 +27,6 @@ public class Treasure implements Entity {
   private Position position;
   @Min(0)
   private BigDecimal size;
-  @NotNull
   private Set<String> assignedCrews;
 
   public Treasure assignCrew(String crewId) {
