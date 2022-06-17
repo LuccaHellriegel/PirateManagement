@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/kamva/mgm/v3"
 	"go.mongodb.org/mongo-driver/bson"
@@ -10,13 +9,7 @@ import (
 )
 
 func InitDB() {
-	username := os.Getenv("MONGODB_USERNAME")
-	password := os.Getenv("MONGODB_PASSWORD")
-	clusterEndpoint := os.Getenv("MONGODB_ENDPOINT")
-
-	//TODO
-	connectionURI := fmt.Sprintf("mongodb://%s:%s@%s", username, password, clusterEndpoint)
-	connectionURI = "mongodb://localhost:27017"
+	connectionURI := "mongodb://localhost:27017"
 
 	err := mgm.SetDefaultConfig(nil, "test", options.Client().ApplyURI(connectionURI))
 
@@ -27,7 +20,7 @@ func InitDB() {
 
 func GetAll[E any](coll_name string) []E {
 	result := []E{}
-	cursor, err := mgm.CollectionByName(TREASURE_COLL).Find(mgm.Ctx(), bson.D{})
+	cursor, err := mgm.CollectionByName(coll_name).Find(mgm.Ctx(), bson.D{})
 	if err != nil {
 		panic(err)
 	}

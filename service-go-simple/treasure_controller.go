@@ -10,7 +10,7 @@ import (
 
 var TREASURE_CONTEXT = "/treasures/"
 
-func TreasureController(r *gin.Engine) {
+func TreasureController(r *gin.RouterGroup) {
 
 	r.POST(TREASURE_CONTEXT, func(c *gin.Context) {
 		treasure := Treasure{}

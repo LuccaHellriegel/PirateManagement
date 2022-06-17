@@ -16,11 +16,11 @@ type Position struct {
 
 type Treasure struct {
 	mgm.DefaultModel `bson:",inline"`
-	Name             string          `validate:"required"`
-	Owner            string          `validate:"required"`
-	Position         Position        `validate:"required"`
-	Size             decimal.Decimal `validate:"required"`
-	AssignedCrews    []string        `validate:"required"`
+	Name             string          `validate:"required" json:"name"`
+	Owner            string          `validate:"required" json:"owner"`
+	Position         Position        `validate:"required" json:"position"`
+	Size             decimal.Decimal `validate:"required" json:"size"`
+	AssignedCrews    []string        `validate:"required" json:"assignedCrews"`
 }
 
 func (t *Treasure) assignCrew(crew Crew) {
@@ -30,9 +30,8 @@ func (t *Treasure) assignCrew(crew Crew) {
 var TREASURE_COLL = "treasures"
 
 func CreateTreasure(treasure Treasure) Treasure {
-	//TODO: prevent this stuff
-	// treasure.SetID(nil)
-	// treasure.AssignedCrews.Clear()
+	treasure.SetID(nil)
+	treasure.AssignedCrews = []string{}
 
 	result, err := mgm.CollectionByName(TREASURE_COLL).InsertOne(mgm.Ctx(), treasure)
 	if err != nil {

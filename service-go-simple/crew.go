@@ -8,10 +8,10 @@ import (
 
 type Crew struct {
 	mgm.DefaultModel  `bson:",inline"`
-	Name              string          `validate:"required"`
-	Capacity          decimal.Decimal `validate:"required"`
-	UsedCapacity      decimal.Decimal `validate:"required"`
-	AssignedTreasures []string        `validate:"required"`
+	Name              string          `validate:"required" json:"name"`
+	Capacity          decimal.Decimal `validate:"required" json:"capacity"`
+	UsedCapacity      decimal.Decimal `validate:"required" json:"usedCapacity"`
+	AssignedTreasures []string        `validate:"required" json:"assignedTreasures"`
 }
 
 func (c *Crew) calculateNewUsedCapacity(toBeAdded Treasure) decimal.Decimal {
@@ -34,9 +34,8 @@ func (c *Crew) assignTreasure(treasure Treasure) {
 var CREW_COLL = "crews"
 
 func CreateCrew(crew Crew) Crew {
-	//TODO: special create struct?
-	// crew.SetID(nil)
-	// crew.AssignedTreasures.Clear()
+	crew.SetID(nil)
+	crew.AssignedTreasures = []string{}
 
 	result, err := mgm.CollectionByName(CREW_COLL).InsertOne(mgm.Ctx(), crew)
 	if err != nil {

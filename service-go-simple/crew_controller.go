@@ -8,7 +8,7 @@ import (
 
 var CREW_CONTEXT = "/crews/"
 
-func CrewController(r *gin.Engine) {
+func CrewController(r *gin.RouterGroup) {
 
 	//TODO
 	r.POST(CREW_CONTEXT, func(c *gin.Context) {
