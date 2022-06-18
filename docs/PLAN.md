@@ -27,3 +27,4 @@
 26. Vercel Deployment
 27. AWS Deployment / Terraform
 28. Kubernetes / Helm / Kind
+29. Treasure NFT (Zora / TheGraph) fun

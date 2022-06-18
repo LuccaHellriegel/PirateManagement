@@ -12,6 +12,7 @@ function createEmptyTreasure(count, pos, size) {
     owner: "owner" + count,
     position: pos,
     size,
+    assignedCrews: [],
   };
 }
 
@@ -22,7 +23,12 @@ function createPos(x, y) {
 const crewKeys = ["name", "capacity", "usedCapacity"];
 
 function createEmptyCrew(count, capcity) {
-  return { name: "crew" + count, capcity, usedCapacity: 0 };
+  return {
+    name: "crew" + count,
+    capacity: capcity,
+    usedCapacity: 0,
+    assignedTreasures: [],
+  };
 }
 
 const treasures = [
@@ -67,7 +73,14 @@ async function getAllCrews() {
 }
 
 async function extract(response) {
-  return { status: response.status, body: await response.json() };
+  let body = "";
+  try {
+    body = await response.json();
+  } catch (err) {}
+  return {
+    status: response.status,
+    body: body,
+  };
 }
 
 function same(keys, originalEntity, dbEntity) {
@@ -87,22 +100,30 @@ async function main() {
   //create entities
 
   //TODO: sort by name
-  // const treasurePostResults = await Promise.all(
-  //   treasures.map((t) => postTreasure(t).catch(console.log).then(extract))
-  // );
-  // const treasurePostResultsCodes = Array.from(
-  //   new Set(treasurePostResults.map((e) => e.status)).values()
-  // );
-  // assert.deepEqual(treasurePostResultsCodes, ["201"]);
+  const treasurePostResults = await Promise.all(
+    treasures.map((t) => postTreasure(t).catch(console.log).then(extract))
+  );
+  const treasurePostResultsCodes = Array.from(
+    new Set(treasurePostResults.map((e) => e.status)).values()
+  );
+  assert.deepEqual(treasurePostResultsCodes, ["200"]);
+  console.log(treasurePostResults);
+  console.log("Succesfully created treasures.");
 
-  // const crewPostResults = await Promise.all(
-  //   crews.map((t) => postCrew(t).catch(console.log).then(extract))
-  // );
+  const crewPostResults = await Promise.all(
+    crews.map((t) => postCrew(t).catch(console.log).then(extract))
+  );
+  const crewPostResultsCodes = Array.from(
+    new Set(crewPostResults.map((e) => e.status)).values()
+  );
+  assert.deepEqual(crewPostResultsCodes, ["200"]);
+  // console.log(crewPostResults);
+  console.log("Succesfully created crews.");
   //invalid POST
 
   //TODO: assign call of treasure1 and crew1
 
-  console.log(await getAllTreasures().then(extract));
+  console.log(await (await getAllTreasures()).json());
   //create all entites and validate body is the same (except id stuff)
   //get all entities and validate sorted body is the same (except id stuff)
   //---DOMAIN---
