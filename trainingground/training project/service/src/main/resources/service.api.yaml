@@ -1,0 +1,91 @@
+openapi: "3.0.0"
+servers:
+  - url: localhost:8080
+info:
+  title: Dummy
+  description: Dummy
+  version: 1.0
+paths:
+  "/dummies/":
+    get:
+      operationId: getAllDummies
+      responses:
+        200:
+          description: all Dummies that were found, might be an empty array
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DummyDTO"
+    post:
+      operationId: createDummy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DummyDTO"
+      responses:
+        200:
+          description: Dummy was successfully created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DummyDTO"
+        400:
+          description: invalid Dummy create-request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RequestError"
+  "/dummies/{dummyId}":
+    parameters:
+      - name: dummyId
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: getDummy
+      responses:
+        200:
+          description: Dummy was found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DummyDTO"
+        404:
+          description: no Dummy with given id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RequestError"
+components:
+  schemas:
+    RequestError:
+      type: object
+      required:
+        - status
+        - code
+        - message
+      properties:
+        status:
+          type: integer
+        code:
+          type: string
+        message:
+          type: string
+    DummyDTO:
+      type: object
+      required:
+        - id
+        - name
+        - isADummy
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        isADummy:
+          type: string
