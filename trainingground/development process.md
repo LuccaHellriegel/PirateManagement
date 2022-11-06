@@ -9,6 +9,7 @@
 - corrections
 # Estimation
 - estimate complexity
+- a full story (new entity, new CRUD API, some domain complexity + UI) is usually a 5 in our estimations
 # Task Breakdown (return as needed)
 - split up the work in tasks
 - make sure to add task for all the big technical challenges
