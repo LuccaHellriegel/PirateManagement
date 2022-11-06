@@ -58,5 +58,8 @@ dist-ssr
 *.sln
 *.sw?
 
-
+.lsp
+.clj-kondo
 generated
+
+service-clojure-simple
